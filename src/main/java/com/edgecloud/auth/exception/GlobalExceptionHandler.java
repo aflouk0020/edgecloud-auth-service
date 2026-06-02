@@ -18,7 +18,23 @@ public class GlobalExceptionHandler {
             DuplicateEmailException ex,
             HttpServletRequest request) {
 
-        return buildResponse(HttpStatus.CONFLICT, ex.getMessage(), request.getRequestURI());
+        return buildResponse(
+                HttpStatus.CONFLICT,
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthentication(
+            AuthenticationException ex,
+            HttpServletRequest request) {
+
+        return buildResponse(
+                HttpStatus.UNAUTHORIZED,
+                ex.getMessage(),
+                request.getRequestURI()
+        );
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -33,7 +49,11 @@ public class GlobalExceptionHandler {
                 .map(error -> error.getField() + " " + error.getDefaultMessage())
                 .orElse("Invalid request");
 
-        return buildResponse(HttpStatus.BAD_REQUEST, message, request.getRequestURI());
+        return buildResponse(
+                HttpStatus.BAD_REQUEST,
+                message,
+                request.getRequestURI()
+        );
     }
 
     @ExceptionHandler(Exception.class)
@@ -41,7 +61,11 @@ public class GlobalExceptionHandler {
             Exception ex,
             HttpServletRequest request) {
 
-        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), request.getRequestURI());
+        return buildResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                ex.getMessage(),
+                request.getRequestURI()
+        );
     }
 
     private ResponseEntity<ErrorResponse> buildResponse(
