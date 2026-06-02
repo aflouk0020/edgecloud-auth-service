@@ -7,6 +7,7 @@ import com.edgecloud.auth.dto.LoginRequest;
 import com.edgecloud.auth.dto.LoginResponse;
 import com.edgecloud.auth.dto.RegisterRequest;
 import com.edgecloud.auth.dto.RegisterResponse;
+import com.edgecloud.auth.dto.TokenValidationResponse;
 import com.edgecloud.auth.entity.User;
 import com.edgecloud.auth.exception.AuthenticationException;
 import com.edgecloud.auth.exception.DuplicateEmailException;
@@ -63,6 +64,26 @@ public class AuthServiceImpl implements AuthService {
         return new LoginResponse(
                 token,
                 user.getRole().name()
+        );
+    }
+    
+    @Override
+    public TokenValidationResponse validateToken(String authorizationHeader) {
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            throw new AuthenticationException("Invalid token");
+        }
+
+        String token = authorizationHeader.substring(7);
+
+        if (!jwtService.isTokenValid(token)) {
+            throw new AuthenticationException("Invalid token");
+        }
+
+        return new TokenValidationResponse(
+                true,
+                jwtService.extractEmail(token),
+                jwtService.extractUserId(token),
+                jwtService.extractRole(token)
         );
     }
 }
