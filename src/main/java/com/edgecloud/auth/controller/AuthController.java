@@ -7,6 +7,7 @@ import com.edgecloud.auth.dto.LoginRequest;
 import com.edgecloud.auth.dto.LoginResponse;
 import com.edgecloud.auth.dto.RegisterRequest;
 import com.edgecloud.auth.dto.RegisterResponse;
+import com.edgecloud.auth.dto.TokenValidationResponse;
 import com.edgecloud.auth.service.AuthService;
 
 import jakarta.validation.Valid;
@@ -34,5 +35,12 @@ public class AuthController {
             @Valid @RequestBody LoginRequest request) {
 
         return authService.login(request);
+    }
+    
+    @GetMapping("/validate")
+    public TokenValidationResponse validateToken(
+            @RequestHeader(name = "Authorization", required = false) String authorizationHeader) {
+
+        return authService.validateToken(authorizationHeader);
     }
 }
