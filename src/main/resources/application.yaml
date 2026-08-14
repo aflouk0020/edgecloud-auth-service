@@ -37,3 +37,8 @@ management:
 edgecloud:
   internal:
     service-key: ${EDGECLOUD_INTERNAL_SERVICE_KEY:}
+  demo-account:
+    enabled: ${EDGECLOUD_DEMO_ACCOUNT_ENABLED:false}
+    email: ${EDGECLOUD_DEMO_ACCOUNT_EMAIL:}
+    password: ${EDGECLOUD_DEMO_ACCOUNT_PASSWORD:}
+    role: ${EDGECLOUD_DEMO_ACCOUNT_ROLE:ADMIN}
